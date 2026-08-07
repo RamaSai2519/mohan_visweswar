@@ -31,8 +31,6 @@ import {
 const WHATSAPP_NUMBER = "918297545757";
 const PHONE_NUMBER = "8297545757";
 const EMAIL = "mohanvisweswar@gmail.com";
-const SERVICES_IMAGE_URL =
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Services-ZBHcjMeGacnF5k3woJQx2mDe88GgcJ.jpeg";
 
 function waLink(text: string) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
@@ -180,8 +178,8 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-ink font-jost pb-20">
-      <div className="mx-auto w-full max-w-360 overflow-hidden bg-paper shadow-2xl">
+    <main className="min-h-screen bg-ink font-jost pb-20 sm:pb-0">
+      <div className="mx-auto w-full overflow-hidden bg-paper shadow-2xl">
         <header className="sticky top-0 z-20 border-b border-white/10 bg-ink/95 text-white backdrop-blur-md">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
             <a
@@ -541,7 +539,7 @@ export default function Home() {
           </div>
         </footer>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 z-30 mx-auto flex max-w-[1440px] justify-center px-3 pb-3 md:hidden">
+      <div className="fixed bottom-0 left-0 right-0 z-30 mx-auto flex max-w-360 justify-center px-3 pb-3 md:hidden">
         <div className="flex w-full max-w-md items-center justify-around rounded-full bg-ink p-2 text-sm text-gold-soft shadow-xl">
           <a
             href={`tel:${PHONE_NUMBER}`}
