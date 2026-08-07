@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { trackEvent } from "@/lib/analytics";
 import {
   ArrowRight,
   BadgeCheck,
@@ -155,6 +156,16 @@ export default function Home() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
+            const categoryId = (entry.target as HTMLElement).dataset
+              .categoryId;
+            const categoryLabel = (entry.target as HTMLElement).dataset
+              .categoryLabel;
+            if (categoryId && categoryLabel) {
+              trackEvent("service_category_impression", {
+                category_id: categoryId,
+                category_label: categoryLabel,
+              });
+            }
             revealObserver.unobserve(entry.target);
           }
         });
@@ -167,8 +178,11 @@ export default function Home() {
     });
 
     const updateProgress = () => {
-      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0);
+      const scrollable =
+        document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(
+        scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0,
+      );
     };
 
     updateProgress();
@@ -192,11 +206,32 @@ export default function Home() {
     "Hello, I would like to know more about your insurance and financial services.",
   );
 
-  const pickService = (serviceName: string) => {
+  const findCategoryForService = (serviceName: string) =>
+    categories.find((category) =>
+      category.items.some(([itemName]) => itemName === serviceName),
+    );
+
+  const pickService = (serviceName: string, categoryLabel?: string) => {
     setService(serviceName);
+    trackEvent("select_content", {
+      content_type: "service",
+      item_id: serviceName,
+      category: categoryLabel ?? findCategoryForService(serviceName)?.label,
+      source: "service_card",
+    });
     document
       .getElementById("enquiry")
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const handleServiceDropdownChange = (serviceName: string) => {
+    setService(serviceName);
+    trackEvent("select_content", {
+      content_type: "service",
+      item_id: serviceName,
+      category: findCategoryForService(serviceName)?.label ?? "General",
+      source: "enquiry_dropdown",
+    });
   };
 
   const sendEnquiry = () => {
@@ -206,8 +241,20 @@ export default function Home() {
       `Phone: ${phone || "-"}`,
       `Service: ${service}`,
     ];
-    if (message) lines.push(`Message: ${message}`);
+    if (message) lines.push(`\n${message}`);
+    trackEvent("generate_lead", {
+      method: "whatsapp",
+      service,
+      category: findCategoryForService(service)?.label ?? "General",
+    });
     window.open(waLink(lines.join("\n")), "_blank", "noopener,noreferrer");
+  };
+
+  const formStarted = useRef(false);
+  const trackFormStart = () => {
+    if (formStarted.current) return;
+    formStarted.current = true;
+    trackEvent("form_start", { form_name: "enquiry" });
   };
 
   return (
@@ -239,18 +286,51 @@ export default function Home() {
               </span>
             </a>
             <nav className="hidden items-center gap-7 text-sm text-slate-200 md:flex">
-              <a href="#services" className="transition hover:text-gold">
+              <a
+                href="#services"
+                className="transition hover:text-gold"
+                onClick={() =>
+                  trackEvent("nav_click", {
+                    link_text: "Services",
+                    location: "header_desktop",
+                  })
+                }
+              >
                 Services
               </a>
-              <a href="#about" className="transition hover:text-gold">
+              <a
+                href="#about"
+                className="transition hover:text-gold"
+                onClick={() =>
+                  trackEvent("nav_click", {
+                    link_text: "Why choose me",
+                    location: "header_desktop",
+                  })
+                }
+              >
                 Why choose me
               </a>
-              <a href="#enquiry" className="transition hover:text-gold">
+              <a
+                href="#enquiry"
+                className="transition hover:text-gold"
+                onClick={() =>
+                  trackEvent("nav_click", {
+                    link_text: "Contact",
+                    location: "header_desktop",
+                  })
+                }
+              >
                 Contact
               </a>
               <a
                 href={`tel:${PHONE_NUMBER}`}
                 className="flex items-center gap-2 rounded-full bg-gold px-4 py-2 font-semibold text-ink"
+                onClick={() =>
+                  trackEvent("contact_click", {
+                    method: "call",
+                    location: "header_desktop",
+                  })
+                }
               >
                 <Phone size={15} /> Call now
               </a>
@@ -259,20 +339,51 @@ export default function Home() {
               type="button"
               aria-label="Toggle menu"
               className="md:hidden"
-              onClick={() => setMenuOpen(!menuOpen)}
+              onClick={() => {
+                const next = !menuOpen;
+                setMenuOpen(next);
+                trackEvent("menu_toggle", { state: next ? "open" : "close" });
+              }}
             >
               {menuOpen ? <X /> : <Menu />}
             </button>
           </div>
           {menuOpen && (
             <nav className="flex flex-col gap-4 border-t border-white/10 px-5 py-5 text-sm text-slate-200 md:hidden">
-              <a href="#services" onClick={() => setMenuOpen(false)}>
+              <a
+                href="#services"
+                onClick={() => {
+                  setMenuOpen(false);
+                  trackEvent("nav_click", {
+                    link_text: "Services",
+                    location: "header_mobile",
+                  });
+                }}
+              >
                 Services
               </a>
-              <a href="#about" onClick={() => setMenuOpen(false)}>
+              <a
+                href="#about"
+                onClick={() => {
+                  setMenuOpen(false);
+                  trackEvent("nav_click", {
+                    link_text: "Why choose me",
+                    location: "header_mobile",
+                  });
+                }}
+              >
                 Why choose me
               </a>
-              <a href="#enquiry" onClick={() => setMenuOpen(false)}>
+              <a
+                href="#enquiry"
+                onClick={() => {
+                  setMenuOpen(false);
+                  trackEvent("nav_click", {
+                    link_text: "Contact",
+                    location: "header_mobile",
+                  });
+                }}
+              >
                 Contact
               </a>
             </nav>
@@ -284,7 +395,10 @@ export default function Home() {
           className="bg-hero px-5 py-12 text-white lg:px-16 lg:py-20"
         >
           <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_.95fr]">
-            <div data-reveal="hero" className="animate-[fadeUp_.7s_ease-out_both]">
+            <div
+              data-reveal="hero"
+              className="animate-[fadeUp_.7s_ease-out_both]"
+            >
               <div className="mb-6 flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">
                 <span className="h-px w-10 bg-gold" />
                 Insurance &amp; financial services
@@ -302,6 +416,12 @@ export default function Home() {
                 <a
                   href="#services"
                   className="flex items-center gap-2 rounded-sm bg-gold px-5 py-3.5 font-semibold text-ink transition hover:bg-gold-soft"
+                  onClick={() =>
+                    trackEvent("cta_click", {
+                      cta_name: "explore_services",
+                      location: "hero",
+                    })
+                  }
                 >
                   Explore services <ArrowRight size={17} />
                 </a>
@@ -310,9 +430,16 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 rounded-sm border border-gold/50 px-5 py-3.5 font-medium text-gold-soft transition hover:bg-white/10"
+                  onClick={() =>
+                    trackEvent("contact_click", {
+                      method: "whatsapp",
+                      location: "hero",
+                    })
+                  }
                 >
-                  <span className="flex w-full gap-2 items-center"
-                  ><MessageCircle size={17} /> WhatsApp Me</span>
+                  <span className="flex w-full gap-2 items-center">
+                    <MessageCircle size={17} /> WhatsApp Me
+                  </span>
                 </a>
               </div>
             </div>
@@ -346,7 +473,10 @@ export default function Home() {
 
         <section id="services" className="px-5 py-16 lg:px-16 lg:py-24">
           <div className="mx-auto ">
-            <div data-reveal="section-heading" className="mb-12 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+            <div
+              data-reveal="section-heading"
+              className="mb-12 flex flex-col justify-between gap-5 lg:flex-row lg:items-end"
+            >
               <div>
                 <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">
                   A complete protection portfolio
@@ -367,7 +497,11 @@ export default function Home() {
                   <article
                     key={category.id}
                     data-reveal="card"
-                    style={{ "--reveal-delay": `${index * 70}ms` } as CSSProperties}
+                    data-category-id={category.id}
+                    data-category-label={category.label}
+                    style={
+                      { "--reveal-delay": `${index * 70}ms` } as CSSProperties
+                    }
                     className="border-t-2 border-navy pt-5"
                   >
                     <div className="flex items-start justify-between gap-4">
@@ -391,7 +525,7 @@ export default function Home() {
                         <button
                           type="button"
                           key={name}
-                          onClick={() => pickService(name)}
+                          onClick={() => pickService(name, category.label)}
                           className="group flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 text-left transition hover:border-gold hover:shadow-md"
                         >
                           <span className="grid size-9 shrink-0 place-items-center rounded-md bg-mist text-navy">
@@ -436,6 +570,12 @@ export default function Home() {
               <a
                 href="#enquiry"
                 className="mt-7 inline-flex items-center gap-2 font-semibold text-navy underline decoration-gold decoration-2 underline-offset-4"
+                onClick={() =>
+                  trackEvent("cta_click", {
+                    cta_name: "start_conversation",
+                    location: "about",
+                  })
+                }
               >
                 Start a conversation <ArrowRight size={16} />
               </a>
@@ -491,24 +631,40 @@ export default function Home() {
                 <a
                   href={`tel:${PHONE_NUMBER}`}
                   className="flex items-center gap-3 text-ink hover:text-gold"
+                  onClick={() =>
+                    trackEvent("contact_click", {
+                      method: "call",
+                      location: "enquiry",
+                    })
+                  }
                 >
                   <Phone size={18} className="text-gold" /> +91 82975 45757
                 </a>
                 <a
                   href={`mailto:${EMAIL}`}
                   className="flex items-center gap-3 text-ink hover:text-gold"
+                  onClick={() =>
+                    trackEvent("contact_click", {
+                      method: "email",
+                      location: "enquiry",
+                    })
+                  }
                 >
                   <Mail size={18} className="text-gold" /> {EMAIL}
                 </a>
               </div>
             </div>
-            <div data-reveal="enquiry-form" className="rounded-2xl bg-mist p-6 sm:p-8">
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div
+              data-reveal="enquiry-form"
+              className="rounded-2xl bg-mist p-6 sm:p-8"
+            >
+              <div className="grid gap-4 sm:grid-cols-2">
                 <label className="text-xs font-medium uppercase tracking-[0.14em] text-muted-ink">
                   Your name
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    onFocus={trackFormStart}
                     placeholder="Full name"
                     className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base normal-case tracking-normal text-ink outline-none focus:border-gold"
                   />
@@ -518,6 +674,7 @@ export default function Home() {
                   <input
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
+                    onFocus={trackFormStart}
                     placeholder="10-digit mobile"
                     inputMode="tel"
                     className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base normal-case tracking-normal text-ink outline-none focus:border-gold"
@@ -527,7 +684,10 @@ export default function Home() {
                   Interested in
                   <select
                     value={service}
-                    onChange={(e) => setService(e.target.value)}
+                    onChange={(e) =>
+                      handleServiceDropdownChange(e.target.value)
+                    }
+                    onFocus={trackFormStart}
                     className="mt-2 w-full appearance-none rounded-lg border border-slate-200 bg-white px-4 py-3 text-base normal-case tracking-normal text-ink outline-none focus:border-gold"
                   >
                     {serviceOptions.map((option) => (
@@ -540,6 +700,7 @@ export default function Home() {
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
+                    onFocus={trackFormStart}
                     rows={4}
                     placeholder="Tell me what you need help with"
                     className="mt-2 w-full resize-y rounded-lg border border-slate-200 bg-white px-4 py-3 text-base normal-case tracking-normal text-ink outline-none focus:border-gold"
@@ -572,10 +733,28 @@ export default function Home() {
               </p>
             </div>
             <div className="flex flex-col gap-3 text-sm text-slate-300 md:items-end">
-              <a href={`tel:${PHONE_NUMBER}`} className="hover:text-gold">
+              <a
+                href={`tel:${PHONE_NUMBER}`}
+                className="hover:text-gold"
+                onClick={() =>
+                  trackEvent("contact_click", {
+                    method: "call",
+                    location: "footer",
+                  })
+                }
+              >
                 +91 82975 45757
               </a>
-              <a href={`mailto:${EMAIL}`} className="hover:text-gold">
+              <a
+                href={`mailto:${EMAIL}`}
+                className="hover:text-gold"
+                onClick={() =>
+                  trackEvent("contact_click", {
+                    method: "email",
+                    location: "footer",
+                  })
+                }
+              >
                 {EMAIL}
               </a>
               <p className="mt-3 text-xs text-slate-500">
@@ -591,6 +770,12 @@ export default function Home() {
           <a
             href={`tel:${PHONE_NUMBER}`}
             className="flex items-center gap-2 px-4 py-2"
+            onClick={() =>
+              trackEvent("contact_click", {
+                method: "call",
+                location: "sticky_bar",
+              })
+            }
           >
             <Phone size={16} /> Call
           </a>
@@ -599,10 +784,25 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 border-x border-gold/30 px-4 py-2"
+            onClick={() =>
+              trackEvent("contact_click", {
+                method: "whatsapp",
+                location: "sticky_bar",
+              })
+            }
           >
             <MessageCircle size={16} /> WhatsApp
           </a>
-          <a href="#enquiry" className="flex items-center gap-2 px-4 py-2">
+          <a
+            href="#enquiry"
+            className="flex items-center gap-2 px-4 py-2"
+            onClick={() =>
+              trackEvent("cta_click", {
+                cta_name: "enquire",
+                location: "sticky_bar",
+              })
+            }
+          >
             <Mail size={16} /> Enquire
           </a>
         </div>
