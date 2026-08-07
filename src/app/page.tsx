@@ -277,18 +277,6 @@ export default function Home() {
                   <MessageCircle size={17} /> WhatsApp me
                 </a>
               </div>
-              <div className="mt-12 grid max-w-xl grid-cols-3 border-y border-gold/25 py-5">
-                {["Trust-led advice", "Quick service", "End-to-end help"].map(
-                  (item) => (
-                    <div
-                      key={item}
-                      className="border-r border-gold/20 px-3 text-center text-[11px] uppercase tracking-[0.12em] text-slate-300 first:pl-0 last:border-0"
-                    >
-                      {item}
-                    </div>
-                  ),
-                )}
-              </div>
             </div>
           </div>
         </section>
@@ -329,61 +317,59 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="grid gap-10 lg:grid-cols-[1fr_300px]">
-              <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-                {categories.map((category) => {
-                  const CategoryIcon = category.icon;
-                  return (
-                    <article
-                      key={category.id}
-                      className="border-t-2 border-navy pt-5"
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <span className="mb-3 grid size-11 place-items-center rounded-full bg-mist text-navy">
-                            <CategoryIcon size={22} />
-                          </span>
-                          <h3 className="font-playfair text-2xl font-semibold text-ink">
-                            {category.label}
-                          </h3>
-                          <p className="mt-2 text-sm leading-relaxed text-muted-ink">
-                            {category.intro}
-                          </p>
-                        </div>
-                        <span className="font-mono text-xs text-gold">
-                          {String(category.items.length).padStart(2, "0")}
+            <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+              {categories.map((category) => {
+                const CategoryIcon = category.icon;
+                return (
+                  <article
+                    key={category.id}
+                    className="border-t-2 border-navy pt-5"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <span className="mb-3 grid size-11 place-items-center rounded-full bg-mist text-navy">
+                          <CategoryIcon size={22} />
                         </span>
+                        <h3 className="font-playfair text-2xl font-semibold text-ink">
+                          {category.label}
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed text-muted-ink">
+                          {category.intro}
+                        </p>
                       </div>
-                      <div className="mt-5 grid gap-2">
-                        {category.items.map(([name, note, Icon]) => (
-                          <button
-                            type="button"
-                            key={name}
-                            onClick={() => pickService(name)}
-                            className="group flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 text-left transition hover:border-gold hover:shadow-md"
-                          >
-                            <span className="grid size-9 shrink-0 place-items-center rounded-md bg-mist text-navy">
-                              <Icon size={17} />
+                      <span className="font-mono text-xs text-gold">
+                        {String(category.items.length).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <div className="mt-5 grid gap-2">
+                      {category.items.map(([name, note, Icon]) => (
+                        <button
+                          type="button"
+                          key={name}
+                          onClick={() => pickService(name)}
+                          className="group flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 text-left transition hover:border-gold hover:shadow-md"
+                        >
+                          <span className="grid size-9 shrink-0 place-items-center rounded-md bg-mist text-navy">
+                            <Icon size={17} />
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block text-sm font-semibold text-ink">
+                              {name}
                             </span>
-                            <span className="min-w-0 flex-1">
-                              <span className="block text-sm font-semibold text-ink">
-                                {name}
-                              </span>
-                              <span className="block truncate text-xs text-muted-ink">
-                                {note}
-                              </span>
+                            <span className="block truncate text-xs text-muted-ink">
+                              {note}
                             </span>
-                            <ArrowRight
-                              size={15}
-                              className="text-gold transition group-hover:translate-x-1"
-                            />
-                          </button>
-                        ))}
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
+                          </span>
+                          <ArrowRight
+                            size={15}
+                            className="text-gold transition group-hover:translate-x-1"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -461,7 +447,7 @@ export default function Home() {
                   href={`tel:${PHONE_NUMBER}`}
                   className="flex items-center gap-3 text-ink hover:text-gold"
                 >
-                  <Phone size={18} className="text-gold" /> 82975 45757
+                  <Phone size={18} className="text-gold" /> +91 82975 45757
                 </a>
                 <a
                   href={`mailto:${EMAIL}`}
@@ -542,7 +528,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col gap-3 text-sm text-slate-300 md:items-end">
               <a href={`tel:${PHONE_NUMBER}`} className="hover:text-gold">
-                82975 45757
+                +91 82975 45757
               </a>
               <a href={`mailto:${EMAIL}`} className="hover:text-gold">
                 {EMAIL}
