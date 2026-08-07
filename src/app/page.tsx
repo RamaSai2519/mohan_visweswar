@@ -673,32 +673,6 @@ export default function Home() {
                 Share a few details and I&apos;ll get back to you on WhatsApp
                 with a clear way forward.
               </p>
-              <div className="mt-8 grid gap-3 text-sm">
-                <a
-                  href={`tel:${PHONE_NUMBER}`}
-                  className="flex items-center gap-3 text-ink hover:text-gold"
-                  onClick={() =>
-                    trackEvent("contact_click", {
-                      method: "call",
-                      location: "enquiry",
-                    })
-                  }
-                >
-                  <Phone size={18} className="text-gold" /> +91 82975 45757
-                </a>
-                <a
-                  href={`mailto:${EMAIL}`}
-                  className="flex items-center gap-3 text-ink hover:text-gold"
-                  onClick={() =>
-                    trackEvent("contact_click", {
-                      method: "email",
-                      location: "enquiry",
-                    })
-                  }
-                >
-                  <Mail size={18} className="text-gold" /> {EMAIL}
-                </a>
-              </div>
             </div>
             <div
               data-reveal="enquiry-form"
