@@ -31,8 +31,8 @@ import {
 const WHATSAPP_NUMBER = "918297545757";
 const PHONE_NUMBER = "8297545757";
 const EMAIL = "mohanvisweswar@gmail.com";
-const VISITING_CARD_URL = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mohan_visiting_card-mFfUvK5nk1AmUJyq0Eqjj5oTuh8bYf.jpeg";
-const SERVICES_IMAGE_URL = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Services-ZBHcjMeGacnF5k3woJQx2mDe88GgcJ.jpeg";
+const SERVICES_IMAGE_URL =
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Services-ZBHcjMeGacnF5k3woJQx2mDe88GgcJ.jpeg";
 
 function waLink(text: string) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
@@ -42,19 +42,25 @@ const categories = [
   {
     id: "motor",
     label: "Motor insurance",
-    intro: "Confident cover for every journey, from everyday cars to commercial vehicles.",
+    intro:
+      "Confident cover for every journey, from everyday cars to commercial vehicles.",
     icon: CarFront,
     items: [
       ["Private car", "Comprehensive and third-party cover", CarFront],
       ["Two-wheeler", "Protection for daily rides and renewals", Zap],
       ["Goods carrying", "Commercial vehicle insurance", BriefcaseBusiness],
-      ["Passenger carrying", "Cover for taxis and passenger vehicles", UsersRound],
+      [
+        "Passenger carrying",
+        "Cover for taxis and passenger vehicles",
+        UsersRound,
+      ],
     ],
   },
   {
     id: "health",
     label: "Health insurance",
-    intro: "Plans that help your family focus on recovery, not unexpected hospital bills.",
+    intro:
+      "Plans that help your family focus on recovery, not unexpected hospital bills.",
     icon: HeartPulse,
     items: [
       ["Individual health", "Personal medical cover and top-ups", Stethoscope],
@@ -65,7 +71,8 @@ const categories = [
   {
     id: "travel",
     label: "Travel insurance",
-    intro: "Travel lighter with support for trips, study, work and family holidays.",
+    intro:
+      "Travel lighter with support for trips, study, work and family holidays.",
     icon: Umbrella,
     items: [
       ["Individual travel", "International and domestic journeys", UserRound],
@@ -76,19 +83,29 @@ const categories = [
   {
     id: "business",
     label: "SME & business",
-    intro: "Practical cover for your shop, people, property and business responsibilities.",
+    intro:
+      "Practical cover for your shop, people, property and business responsibilities.",
     icon: Building2,
     items: [
       ["Marine insurance", "Goods in transit and marine cargo", Ship],
-      ["Business insurance", "Shop, stock, fire and liability cover", Building2],
+      [
+        "Business insurance",
+        "Shop, stock, fire and liability cover",
+        Building2,
+      ],
       ["Employee cover", "Support for your most valuable asset", UsersRound],
-      ["Professional indemnity", "Protection for professional advice", BadgeCheck],
+      [
+        "Professional indemnity",
+        "Protection for professional advice",
+        BadgeCheck,
+      ],
     ],
   },
   {
     id: "protection",
     label: "Life & protection",
-    intro: "Build a stronger financial safety net for the people and plans that matter.",
+    intro:
+      "Build a stronger financial safety net for the people and plans that matter.",
     icon: ShieldCheck,
     items: [
       ["Term life", "Straightforward income protection", Umbrella],
@@ -100,7 +117,8 @@ const categories = [
   {
     id: "finance",
     label: "Financial services",
-    intro: "Clear, personal guidance for borrowing, cards and getting started with investing.",
+    intro:
+      "Clear, personal guidance for borrowing, cards and getting started with investing.",
     icon: TrendingUp,
     items: [
       ["Loans", "Personal, home, vehicle and business", Landmark],
@@ -111,9 +129,21 @@ const categories = [
 ] as const;
 
 const benefits = [
-  [ShieldCheck, "Reliable service", "Policies explained clearly, renewals tracked and follow-ups handled."],
-  [UsersRound, "Trusted guidance", "A personal advisor who understands your family, vehicle or business."],
-  [Zap, "Prompt assistance", "From paperwork to claims, get support when it matters most."],
+  [
+    ShieldCheck,
+    "Reliable service",
+    "Policies explained clearly, renewals tracked and follow-ups handled.",
+  ],
+  [
+    UsersRound,
+    "Trusted guidance",
+    "A personal advisor who understands your family, vehicle or business.",
+  ],
+  [
+    Zap,
+    "Prompt assistance",
+    "From paperwork to claims, get support when it matters most.",
+  ],
 ];
 
 export default function Home() {
@@ -123,63 +153,429 @@ export default function Home() {
   const [service, setService] = useState("General enquiry");
   const [message, setMessage] = useState("");
 
-  const serviceOptions = ["General enquiry", ...categories.flatMap((category) => category.items.map(([name]) => name))];
-  const generalWaLink = waLink("Hello, I would like to know more about your insurance and financial services.");
+  const serviceOptions = [
+    "General enquiry",
+    ...categories.flatMap((category) => category.items.map(([name]) => name)),
+  ];
+  const generalWaLink = waLink(
+    "Hello, I would like to know more about your insurance and financial services.",
+  );
 
   const pickService = (serviceName: string) => {
     setService(serviceName);
-    document.getElementById("enquiry")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document
+      .getElementById("enquiry")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const sendEnquiry = () => {
-    const lines = ["Hello, I would like to enquire.", `Name: ${name || "-"}`, `Phone: ${phone || "-"}`, `Service: ${service}`];
+    const lines = [
+      "Hello, I would like to enquire.",
+      `Name: ${name || "-"}`,
+      `Phone: ${phone || "-"}`,
+      `Service: ${service}`,
+    ];
     if (message) lines.push(`Message: ${message}`);
     window.open(waLink(lines.join("\n")), "_blank", "noopener,noreferrer");
   };
 
   return (
     <main className="min-h-screen bg-ink font-jost pb-20">
-      <div className="mx-auto w-full max-w-[1440px] overflow-hidden bg-paper shadow-2xl">
+      <div className="mx-auto w-full max-w-360 overflow-hidden bg-paper shadow-2xl">
         <header className="sticky top-0 z-20 border-b border-white/10 bg-ink/95 text-white backdrop-blur-md">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
-            <a href="#top" className="flex items-center gap-3" onClick={() => setMenuOpen(false)}>
-              <span className="grid size-10 place-items-center rounded-full border border-gold/60 text-gold"><Umbrella size={20} /></span>
-              <span><span className="block font-playfair text-lg leading-none">Chandika</span><span className="text-[10px] uppercase tracking-[0.2em] text-gold">Mohan Visweswar</span></span>
+            <a
+              href="#top"
+              className="flex items-center gap-3"
+              onClick={() => setMenuOpen(false)}
+            >
+              <span className="grid size-10 place-items-center rounded-full border border-gold/60 text-gold">
+                <Umbrella size={20} />
+              </span>
+              <span>
+                <span className="block font-playfair text-lg leading-none">
+                  Chandika
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-gold">
+                  Mohan Visweswar
+                </span>
+              </span>
             </a>
             <nav className="hidden items-center gap-7 text-sm text-slate-200 md:flex">
-              <a href="#services" className="transition hover:text-gold">Services</a><a href="#about" className="transition hover:text-gold">Why choose me</a><a href="#enquiry" className="transition hover:text-gold">Contact</a>
-              <a href={`tel:${PHONE_NUMBER}`} className="flex items-center gap-2 rounded-full bg-gold px-4 py-2 font-semibold text-ink"><Phone size={15} /> Call now</a>
+              <a href="#services" className="transition hover:text-gold">
+                Services
+              </a>
+              <a href="#about" className="transition hover:text-gold">
+                Why choose me
+              </a>
+              <a href="#enquiry" className="transition hover:text-gold">
+                Contact
+              </a>
+              <a
+                href={`tel:${PHONE_NUMBER}`}
+                className="flex items-center gap-2 rounded-full bg-gold px-4 py-2 font-semibold text-ink"
+              >
+                <Phone size={15} /> Call now
+              </a>
             </nav>
-            <button type="button" aria-label="Toggle menu" className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
+            <button
+              type="button"
+              aria-label="Toggle menu"
+              className="md:hidden"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              {menuOpen ? <X /> : <Menu />}
+            </button>
           </div>
-          {menuOpen && <nav className="flex flex-col gap-4 border-t border-white/10 px-5 py-5 text-sm text-slate-200 md:hidden"><a href="#services" onClick={() => setMenuOpen(false)}>Services</a><a href="#about" onClick={() => setMenuOpen(false)}>Why choose me</a><a href="#enquiry" onClick={() => setMenuOpen(false)}>Contact</a></nav>}
+          {menuOpen && (
+            <nav className="flex flex-col gap-4 border-t border-white/10 px-5 py-5 text-sm text-slate-200 md:hidden">
+              <a href="#services" onClick={() => setMenuOpen(false)}>
+                Services
+              </a>
+              <a href="#about" onClick={() => setMenuOpen(false)}>
+                Why choose me
+              </a>
+              <a href="#enquiry" onClick={() => setMenuOpen(false)}>
+                Contact
+              </a>
+            </nav>
+          )}
         </header>
 
-        <section id="top" className="bg-hero px-5 py-12 text-white lg:px-16 lg:py-20">
+        <section
+          id="top"
+          className="bg-hero px-5 py-12 text-white lg:px-16 lg:py-20"
+        >
           <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_.95fr]">
             <div className="animate-[fadeUp_.7s_ease-out_both]">
-              <div className="mb-6 flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold"><span className="h-px w-10 bg-gold" />Insurance &amp; financial services</div>
-              <h1 className="max-w-3xl font-playfair text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">Securing today<br /><span className="text-gold-soft">for a better tomorrow.</span></h1>
-              <p className="mt-7 max-w-xl text-lg leading-relaxed text-slate-300">Personal insurance, loans and investment guidance for families, professionals and growing businesses.</p>
-              <div className="mt-9 flex flex-wrap gap-3"><a href="#services" className="flex items-center gap-2 rounded-sm bg-gold px-5 py-3.5 font-semibold text-ink transition hover:bg-gold-soft">Explore services <ArrowRight size={17} /></a><a href={generalWaLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-sm border border-gold/50 px-5 py-3.5 font-medium text-gold-soft transition hover:bg-white/10"><MessageCircle size={17} /> WhatsApp me</a></div>
-              <div className="mt-12 grid max-w-xl grid-cols-3 border-y border-gold/25 py-5">{["Trust-led advice", "Quick service", "End-to-end help"].map((item) => <div key={item} className="border-r border-gold/20 px-3 text-center text-[11px] uppercase tracking-[0.12em] text-slate-300 first:pl-0 last:border-0">{item}</div>)}</div>
+              <div className="mb-6 flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">
+                <span className="h-px w-10 bg-gold" />
+                Insurance &amp; financial services
+              </div>
+              <h1 className="max-w-3xl font-playfair text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
+                Securing today
+                <br />
+                <span className="text-gold-soft">for a better tomorrow.</span>
+              </h1>
+              <p className="mt-7 max-w-xl text-lg leading-relaxed text-slate-300">
+                Personal insurance, loans and investment guidance for families,
+                professionals and growing businesses.
+              </p>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <a
+                  href="#services"
+                  className="flex items-center gap-2 rounded-sm bg-gold px-5 py-3.5 font-semibold text-ink transition hover:bg-gold-soft"
+                >
+                  Explore services <ArrowRight size={17} />
+                </a>
+                <a
+                  href={generalWaLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded-sm border border-gold/50 px-5 py-3.5 font-medium text-gold-soft transition hover:bg-white/10"
+                >
+                  <MessageCircle size={17} /> WhatsApp me
+                </a>
+              </div>
+              <div className="mt-12 grid max-w-xl grid-cols-3 border-y border-gold/25 py-5">
+                {["Trust-led advice", "Quick service", "End-to-end help"].map(
+                  (item) => (
+                    <div
+                      key={item}
+                      className="border-r border-gold/20 px-3 text-center text-[11px] uppercase tracking-[0.12em] text-slate-300 first:pl-0 last:border-0"
+                    >
+                      {item}
+                    </div>
+                  ),
+                )}
+              </div>
             </div>
-            <div className="relative mx-auto w-full max-w-xl lg:justify-self-end"><div className="absolute -inset-4 rounded-[2rem] border border-gold/30" /><img src={VISITING_CARD_URL} alt="Chandika Mohan Visweswar insurance and financial services visiting card" className="relative w-full rounded-2xl shadow-2xl" /></div>
           </div>
         </section>
 
-        <section className="border-b border-slate-200 bg-white px-5 py-10 lg:px-16"><div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">{benefits.map(([Icon, title, body]) => <div key={title as string} className="flex gap-4"><span className="grid size-12 shrink-0 place-items-center rounded-full bg-mist text-navy"><Icon size={23} /></span><div><h2 className="font-playfair text-xl font-semibold text-ink">{title as string}</h2><p className="mt-1 text-sm leading-relaxed text-muted-ink">{body as string}</p></div></div>)}</div></section>
+        <section className="border-b border-slate-200 bg-white px-5 py-10 lg:px-16">
+          <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
+            {benefits.map(([Icon, title, body]) => (
+              <div key={title as string} className="flex gap-4">
+                <span className="grid size-12 shrink-0 place-items-center rounded-full bg-mist text-navy">
+                  <Icon size={23} />
+                </span>
+                <div>
+                  <h2 className="font-playfair text-xl font-semibold text-ink">
+                    {title as string}
+                  </h2>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-ink">
+                    {body as string}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        <section id="services" className="px-5 py-16 lg:px-16 lg:py-24"><div className="mx-auto max-w-7xl"><div className="mb-12 flex flex-col justify-between gap-5 lg:flex-row lg:items-end"><div><div className="mb-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">A complete protection portfolio</div><h2 className="max-w-2xl font-playfair text-4xl font-semibold leading-tight text-ink sm:text-5xl">The right cover for every chapter.</h2></div><p className="max-w-md text-base leading-relaxed text-muted-ink">Browse by category and tap any service to start a personalised conversation.</p></div>
-          <div className="grid gap-10 lg:grid-cols-[1fr_300px]"><div className="grid gap-10 md:grid-cols-2">{categories.map((category) => { const CategoryIcon = category.icon; return <article key={category.id} className="border-t-2 border-navy pt-5"><div className="flex items-start justify-between gap-4"><div><span className="mb-3 grid size-11 place-items-center rounded-full bg-mist text-navy"><CategoryIcon size={22} /></span><h3 className="font-playfair text-2xl font-semibold text-ink">{category.label}</h3><p className="mt-2 text-sm leading-relaxed text-muted-ink">{category.intro}</p></div><span className="font-mono text-xs text-gold">{String(category.items.length).padStart(2, "0")}</span></div><div className="mt-5 grid gap-2">{category.items.map(([name, note, Icon]) => <button type="button" key={name} onClick={() => pickService(name)} className="group flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 text-left transition hover:border-gold hover:shadow-md"><span className="grid size-9 shrink-0 place-items-center rounded-md bg-mist text-navy"><Icon size={17} /></span><span className="min-w-0 flex-1"><span className="block text-sm font-semibold text-ink">{name}</span><span className="block truncate text-xs text-muted-ink">{note}</span></span><ArrowRight size={15} className="text-gold transition group-hover:translate-x-1" /></button>)}</div></article>; })}</div><aside className="hidden lg:block"><div className="sticky top-24 overflow-hidden rounded-2xl bg-navy"><img src={SERVICES_IMAGE_URL} alt="Categorized insurance services reference" className="h-72 w-full object-cover object-top opacity-90" /><div className="p-6 text-white"><div className="mb-2 text-[11px] uppercase tracking-[0.25em] text-gold">One advisor</div><p className="font-playfair text-2xl leading-tight">Many ways to protect what matters.</p><a href="#enquiry" className="mt-6 inline-flex items-center gap-2 text-sm text-gold-soft">Ask for guidance <ArrowRight size={15} /></a></div></div></aside></div></div></section>
+        <section id="services" className="px-5 py-16 lg:px-16 lg:py-24">
+          <div className="mx-auto ">
+            <div className="mb-12 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+              <div>
+                <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">
+                  A complete protection portfolio
+                </div>
+                <h2 className="font-playfair text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+                  The right cover for every chapter.
+                </h2>
+                <p className="text-base leading-relaxed text-muted-ink">
+                  Browse by category and tap any service to start a personalised
+                  conversation.
+                </p>
+              </div>
+            </div>
+            <div className="grid gap-10 lg:grid-cols-[1fr_300px]">
+              <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+                {categories.map((category) => {
+                  const CategoryIcon = category.icon;
+                  return (
+                    <article
+                      key={category.id}
+                      className="border-t-2 border-navy pt-5"
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <span className="mb-3 grid size-11 place-items-center rounded-full bg-mist text-navy">
+                            <CategoryIcon size={22} />
+                          </span>
+                          <h3 className="font-playfair text-2xl font-semibold text-ink">
+                            {category.label}
+                          </h3>
+                          <p className="mt-2 text-sm leading-relaxed text-muted-ink">
+                            {category.intro}
+                          </p>
+                        </div>
+                        <span className="font-mono text-xs text-gold">
+                          {String(category.items.length).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <div className="mt-5 grid gap-2">
+                        {category.items.map(([name, note, Icon]) => (
+                          <button
+                            type="button"
+                            key={name}
+                            onClick={() => pickService(name)}
+                            className="group flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 text-left transition hover:border-gold hover:shadow-md"
+                          >
+                            <span className="grid size-9 shrink-0 place-items-center rounded-md bg-mist text-navy">
+                              <Icon size={17} />
+                            </span>
+                            <span className="min-w-0 flex-1">
+                              <span className="block text-sm font-semibold text-ink">
+                                {name}
+                              </span>
+                              <span className="block truncate text-xs text-muted-ink">
+                                {note}
+                              </span>
+                            </span>
+                            <ArrowRight
+                              size={15}
+                              className="text-gold transition group-hover:translate-x-1"
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <section id="about" className="bg-mist px-5 py-16 lg:px-16 lg:py-24"><div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[.85fr_1.15fr]"><div><div className="mb-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">Personal guidance, made simple</div><h2 className="font-playfair text-4xl font-semibold leading-tight text-ink sm:text-5xl">Advice that stays with you.</h2><p className="mt-5 max-w-lg leading-relaxed text-muted-ink">Insurance should feel like a safety net, not a maze of fine print. I help you understand your options, choose suitable cover and stay supported after the policy is issued.</p><a href="#enquiry" className="mt-7 inline-flex items-center gap-2 font-semibold text-navy underline decoration-gold decoration-2 underline-offset-4">Start a conversation <ArrowRight size={16} /></a></div><div className="grid gap-4 sm:grid-cols-2"><div className="rounded-2xl bg-ink p-7 text-white sm:col-span-2"><div className="flex items-center gap-3"><BadgeCheck className="text-gold" /><span className="text-sm uppercase tracking-[0.18em] text-gold-soft">A simpler experience</span></div><p className="mt-5 max-w-2xl font-playfair text-3xl leading-tight">Clear explanations. Thoughtful recommendations. Help when you need it.</p></div><div className="rounded-2xl border border-slate-200 bg-white p-6"><p className="font-playfair text-3xl text-ink">01</p><p className="mt-2 font-semibold text-ink">Understand</p><p className="mt-1 text-sm leading-relaxed text-muted-ink">We look at your needs, not just a product list.</p></div><div className="rounded-2xl border border-slate-200 bg-white p-6"><p className="font-playfair text-3xl text-ink">02</p><p className="mt-2 font-semibold text-ink">Protect</p><p className="mt-1 text-sm leading-relaxed text-muted-ink">You get cover and continued support, end to end.</p></div></div></div></section>
+        <section id="about" className="bg-mist px-5 py-16 lg:px-16 lg:py-24">
+          <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[.85fr_1.15fr]">
+            <div>
+              <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">
+                Personal guidance, made simple
+              </div>
+              <h2 className="font-playfair text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+                Advice that stays with you.
+              </h2>
+              <p className="mt-5 max-w-lg leading-relaxed text-muted-ink">
+                Insurance should feel like a safety net, not a maze of fine
+                print. I help you understand your options, choose suitable cover
+                and stay supported after the policy is issued.
+              </p>
+              <a
+                href="#enquiry"
+                className="mt-7 inline-flex items-center gap-2 font-semibold text-navy underline decoration-gold decoration-2 underline-offset-4"
+              >
+                Start a conversation <ArrowRight size={16} />
+              </a>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl bg-ink p-7 text-white sm:col-span-2">
+                <div className="flex items-center gap-3">
+                  <BadgeCheck className="text-gold" />
+                  <span className="text-sm uppercase tracking-[0.18em] text-gold-soft">
+                    A simpler experience
+                  </span>
+                </div>
+                <p className="mt-5 max-w-2xl font-playfair text-3xl leading-tight">
+                  Clear explanations. Thoughtful recommendations. Help when you
+                  need it.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-slate-200 bg-white p-6">
+                <p className="font-playfair text-3xl text-ink">01</p>
+                <p className="mt-2 font-semibold text-ink">Understand</p>
+                <p className="mt-1 text-sm leading-relaxed text-muted-ink">
+                  We look at your needs, not just a product list.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-slate-200 bg-white p-6">
+                <p className="font-playfair text-3xl text-ink">02</p>
+                <p className="mt-2 font-semibold text-ink">Protect</p>
+                <p className="mt-1 text-sm leading-relaxed text-muted-ink">
+                  You get cover and continued support, end to end.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <section id="enquiry" className="scroll-mt-20 px-5 py-16 lg:px-16 lg:py-24"><div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.8fr_1.2fr]"><div><div className="mb-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">Let&apos;s talk</div><h2 className="font-playfair text-4xl font-semibold leading-tight text-ink sm:text-5xl">Your next step can be simple.</h2><p className="mt-5 max-w-md leading-relaxed text-muted-ink">Share a few details and I&apos;ll get back to you on WhatsApp with a clear way forward.</p><div className="mt-8 grid gap-3 text-sm"><a href={`tel:${PHONE_NUMBER}`} className="flex items-center gap-3 text-ink hover:text-gold"><Phone size={18} className="text-gold" /> 82975 45757</a><a href={`mailto:${EMAIL}`} className="flex items-center gap-3 text-ink hover:text-gold"><Mail size={18} className="text-gold" /> {EMAIL}</a></div></div><div className="rounded-2xl bg-mist p-6 sm:p-8"><div className="grid gap-4 sm:grid-cols-2"><label className="text-xs font-medium uppercase tracking-[0.14em] text-muted-ink">Your name<input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full name" className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base normal-case tracking-normal text-ink outline-none focus:border-gold" /></label><label className="text-xs font-medium uppercase tracking-[0.14em] text-muted-ink">Phone<input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="10-digit mobile" inputMode="tel" className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base normal-case tracking-normal text-ink outline-none focus:border-gold" /></label><label className="text-xs font-medium uppercase tracking-[0.14em] text-muted-ink sm:col-span-2">Interested in<select value={service} onChange={(e) => setService(e.target.value)} className="mt-2 w-full appearance-none rounded-lg border border-slate-200 bg-white px-4 py-3 text-base normal-case tracking-normal text-ink outline-none focus:border-gold">{serviceOptions.map((option) => <option key={option}>{option}</option>)}</select></label><label className="text-xs font-medium uppercase tracking-[0.14em] text-muted-ink sm:col-span-2">Message<textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={4} placeholder="Tell me what you need help with" className="mt-2 w-full resize-y rounded-lg border border-slate-200 bg-white px-4 py-3 text-base normal-case tracking-normal text-ink outline-none focus:border-gold" /></label></div><button type="button" onClick={sendEnquiry} className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-ink px-5 py-4 font-semibold text-gold-soft transition hover:bg-navy"><MessageCircle size={18} /> Send enquiry on WhatsApp</button></div></div></section>
+        <section
+          id="enquiry"
+          className="scroll-mt-20 px-5 py-16 lg:px-16 lg:py-24"
+        >
+          <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.8fr_1.2fr]">
+            <div>
+              <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">
+                Let&apos;s talk
+              </div>
+              <h2 className="font-playfair text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+                Your next step can be simple.
+              </h2>
+              <p className="mt-5 max-w-md leading-relaxed text-muted-ink">
+                Share a few details and I&apos;ll get back to you on WhatsApp
+                with a clear way forward.
+              </p>
+              <div className="mt-8 grid gap-3 text-sm">
+                <a
+                  href={`tel:${PHONE_NUMBER}`}
+                  className="flex items-center gap-3 text-ink hover:text-gold"
+                >
+                  <Phone size={18} className="text-gold" /> 82975 45757
+                </a>
+                <a
+                  href={`mailto:${EMAIL}`}
+                  className="flex items-center gap-3 text-ink hover:text-gold"
+                >
+                  <Mail size={18} className="text-gold" /> {EMAIL}
+                </a>
+              </div>
+            </div>
+            <div className="rounded-2xl bg-mist p-6 sm:p-8">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="text-xs font-medium uppercase tracking-[0.14em] text-muted-ink">
+                  Your name
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Full name"
+                    className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base normal-case tracking-normal text-ink outline-none focus:border-gold"
+                  />
+                </label>
+                <label className="text-xs font-medium uppercase tracking-[0.14em] text-muted-ink">
+                  Phone
+                  <input
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="10-digit mobile"
+                    inputMode="tel"
+                    className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base normal-case tracking-normal text-ink outline-none focus:border-gold"
+                  />
+                </label>
+                <label className="text-xs font-medium uppercase tracking-[0.14em] text-muted-ink sm:col-span-2">
+                  Interested in
+                  <select
+                    value={service}
+                    onChange={(e) => setService(e.target.value)}
+                    className="mt-2 w-full appearance-none rounded-lg border border-slate-200 bg-white px-4 py-3 text-base normal-case tracking-normal text-ink outline-none focus:border-gold"
+                  >
+                    {serviceOptions.map((option) => (
+                      <option key={option}>{option}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="text-xs font-medium uppercase tracking-[0.14em] text-muted-ink sm:col-span-2">
+                  Message
+                  <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    rows={4}
+                    placeholder="Tell me what you need help with"
+                    className="mt-2 w-full resize-y rounded-lg border border-slate-200 bg-white px-4 py-3 text-base normal-case tracking-normal text-ink outline-none focus:border-gold"
+                  />
+                </label>
+              </div>
+              <button
+                type="button"
+                onClick={sendEnquiry}
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-ink px-5 py-4 font-semibold text-gold-soft transition hover:bg-navy"
+              >
+                <MessageCircle size={18} /> Send enquiry on WhatsApp
+              </button>
+            </div>
+          </div>
+        </section>
 
-        <footer className="bg-ink px-5 py-10 text-white lg:px-16"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 md:flex-row md:items-end"><div><div className="font-playfair text-2xl">Chandika Mohan Visweswar</div><div className="mt-2 text-[11px] uppercase tracking-[0.22em] text-gold">Insurance &amp; financial services</div><p className="mt-5 max-w-md text-sm leading-relaxed text-slate-400">Reliable service, trusted guidance and prompt assistance for the things that matter most.</p></div><div className="flex flex-col gap-3 text-sm text-slate-300 md:items-end"><a href={`tel:${PHONE_NUMBER}`} className="hover:text-gold">82975 45757</a><a href={`mailto:${EMAIL}`} className="hover:text-gold">{EMAIL}</a><p className="mt-3 text-xs text-slate-500">Insurance is the subject matter of solicitation. Terms and conditions apply.</p></div></div></footer>
+        <footer className="bg-ink px-5 py-10 text-white lg:px-16">
+          <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 md:flex-row md:items-end">
+            <div>
+              <div className="font-playfair text-2xl">
+                Chandika Mohan Visweswar
+              </div>
+              <div className="mt-2 text-[11px] uppercase tracking-[0.22em] text-gold">
+                Insurance &amp; financial services
+              </div>
+              <p className="mt-5 max-w-md text-sm leading-relaxed text-slate-400">
+                Reliable service, trusted guidance and prompt assistance for the
+                things that matter most.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 text-sm text-slate-300 md:items-end">
+              <a href={`tel:${PHONE_NUMBER}`} className="hover:text-gold">
+                82975 45757
+              </a>
+              <a href={`mailto:${EMAIL}`} className="hover:text-gold">
+                {EMAIL}
+              </a>
+              <p className="mt-3 text-xs text-slate-500">
+                Insurance is the subject matter of solicitation. Terms and
+                conditions apply.
+              </p>
+            </div>
+          </div>
+        </footer>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 z-30 mx-auto flex max-w-[1440px] justify-center px-3 pb-3 md:hidden"><div className="flex w-full max-w-md items-center justify-around rounded-full bg-ink p-2 text-sm text-gold-soft shadow-xl"><a href={`tel:${PHONE_NUMBER}`} className="flex items-center gap-2 px-4 py-2"><Phone size={16} /> Call</a><a href={generalWaLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 border-x border-gold/30 px-4 py-2"><MessageCircle size={16} /> WhatsApp</a><a href="#enquiry" className="flex items-center gap-2 px-4 py-2"><Mail size={16} /> Enquire</a></div></div>
+      <div className="fixed bottom-0 left-0 right-0 z-30 mx-auto flex max-w-[1440px] justify-center px-3 pb-3 md:hidden">
+        <div className="flex w-full max-w-md items-center justify-around rounded-full bg-ink p-2 text-sm text-gold-soft shadow-xl">
+          <a
+            href={`tel:${PHONE_NUMBER}`}
+            className="flex items-center gap-2 px-4 py-2"
+          >
+            <Phone size={16} /> Call
+          </a>
+          <a
+            href={generalWaLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 border-x border-gold/30 px-4 py-2"
+          >
+            <MessageCircle size={16} /> WhatsApp
+          </a>
+          <a href="#enquiry" className="flex items-center gap-2 px-4 py-2">
+            <Mail size={16} /> Enquire
+          </a>
+        </div>
+      </div>
     </main>
   );
 }
