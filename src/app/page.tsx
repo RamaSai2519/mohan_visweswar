@@ -145,6 +145,51 @@ const benefits = [
   ],
 ];
 
+const enquiryMessages: Record<string, string> = {
+  "Private car":
+    "I would like a quote for private car insurance. Please share the coverage and premium options.",
+  "Two-wheeler":
+    "I would like help choosing or renewing two-wheeler insurance. Please share the available options.",
+  "Goods carrying":
+    "I would like a quote for goods carrying vehicle insurance. Please share the coverage and premium details.",
+  "Passenger carrying":
+    "I would like a quote for passenger carrying vehicle insurance. Please share the coverage and premium details.",
+  "Individual health":
+    "I would like to know more about individual health insurance plans and premium options.",
+  "Family health":
+    "I would like to explore family health insurance plans. Please share suitable coverage options.",
+  "Multi health":
+    "I would like to know more about flexible multi health insurance options.",
+  "Individual travel":
+    "I would like a quote for individual travel insurance. Please share the available coverage options.",
+  "Family travel":
+    "I would like a quote for family travel insurance. Please share the available coverage options.",
+  "Student travel":
+    "I would like to know more about travel insurance for studying abroad.",
+  "Marine insurance":
+    "I would like a quote for marine insurance for goods in transit or cargo.",
+  "Business insurance":
+    "I would like to discuss insurance cover for my business, shop, stock or property.",
+  "Employee cover":
+    "I would like to explore insurance cover options for my employees.",
+  "Professional indemnity":
+    "I would like to know more about professional indemnity insurance for my work.",
+  "Term life":
+    "I would like to discuss term life insurance options for income protection.",
+  "Personal accident":
+    "I would like to know more about personal accident insurance coverage.",
+  "Cattle insurance":
+    "I would like a quote for cattle insurance. Please share the coverage details.",
+  "Home insurance":
+    "I would like to explore home insurance for my property and contents.",
+  "Loans":
+    "I would like guidance on loan options. Please contact me to discuss my requirements.",
+  "Credit cards":
+    "I would like help comparing credit card options and applying for a suitable card.",
+  "Demat accounts":
+    "I would like help opening, transferring or managing a Demat account.",
+};
+
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -156,8 +201,7 @@ export default function Home() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
-            const categoryId = (entry.target as HTMLElement).dataset
-              .categoryId;
+            const categoryId = (entry.target as HTMLElement).dataset.categoryId;
             const categoryLabel = (entry.target as HTMLElement).dataset
               .categoryLabel;
             if (categoryId && categoryLabel) {
@@ -213,6 +257,7 @@ export default function Home() {
 
   const pickService = (serviceName: string, categoryLabel?: string) => {
     setService(serviceName);
+    setMessage(enquiryMessages[serviceName] ?? "");
     trackEvent("select_content", {
       content_type: "service",
       item_id: serviceName,
@@ -226,6 +271,7 @@ export default function Home() {
 
   const handleServiceDropdownChange = (serviceName: string) => {
     setService(serviceName);
+    setMessage(enquiryMessages[serviceName] ?? "");
     trackEvent("select_content", {
       content_type: "service",
       item_id: serviceName,
