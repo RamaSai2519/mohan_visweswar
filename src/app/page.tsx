@@ -311,7 +311,8 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 rounded-sm border border-gold/50 px-5 py-3.5 font-medium text-gold-soft transition hover:bg-white/10"
                 >
-                  <MessageCircle size={17} /> WhatsApp me
+                  <span className="flex w-full gap-2 items-center"
+                  ><MessageCircle size={17} /> WhatsApp Me</span>
                 </a>
               </div>
             </div>
