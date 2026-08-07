@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import {
   ArrowRight,
   BadgeCheck,
@@ -146,6 +146,39 @@ const benefits = [
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    document.documentElement.classList.add("has-motion");
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+    );
+
+    document.querySelectorAll("[data-reveal]").forEach((element) => {
+      revealObserver.observe(element);
+    });
+
+    const updateProgress = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0);
+    };
+
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    return () => {
+      revealObserver.disconnect();
+      window.removeEventListener("scroll", updateProgress);
+      document.documentElement.classList.remove("has-motion");
+    };
+  }, []);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [service, setService] = useState("General enquiry");
@@ -181,6 +214,12 @@ export default function Home() {
     <main className="min-h-screen bg-ink font-jost pb-20 sm:pb-0">
       <div className="mx-auto w-full overflow-hidden bg-paper shadow-2xl">
         <header className="sticky top-0 z-20 border-b border-white/10 bg-ink/95 text-white backdrop-blur-md">
+          <div className="absolute inset-x-0 bottom-0 h-px bg-white/10">
+            <span
+              className="block h-full origin-left bg-gold transition-[width] duration-150 ease-out"
+              style={{ width: `${scrollProgress}%` }}
+            />
+          </div>
           <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
             <a
               href="#top"
@@ -245,7 +284,7 @@ export default function Home() {
           className="bg-hero px-5 py-12 text-white lg:px-16 lg:py-20"
         >
           <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_.95fr]">
-            <div className="animate-[fadeUp_.7s_ease-out_both]">
+            <div data-reveal="hero" className="animate-[fadeUp_.7s_ease-out_both]">
               <div className="mb-6 flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">
                 <span className="h-px w-10 bg-gold" />
                 Insurance &amp; financial services
@@ -281,8 +320,13 @@ export default function Home() {
 
         <section className="border-b border-slate-200 bg-white px-5 py-10 lg:px-16">
           <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
-            {benefits.map(([Icon, title, body]) => (
-              <div key={title as string} className="flex gap-4">
+            {benefits.map(([Icon, title, body], index) => (
+              <div
+                key={title as string}
+                data-reveal="benefit"
+                style={{ "--reveal-delay": `${index * 90}ms` } as CSSProperties}
+                className="flex gap-4"
+              >
                 <span className="grid size-12 shrink-0 place-items-center rounded-full bg-mist text-navy">
                   <Icon size={23} />
                 </span>
@@ -301,7 +345,7 @@ export default function Home() {
 
         <section id="services" className="px-5 py-16 lg:px-16 lg:py-24">
           <div className="mx-auto ">
-            <div className="mb-12 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+            <div data-reveal="section-heading" className="mb-12 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
               <div>
                 <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">
                   A complete protection portfolio
@@ -316,11 +360,13 @@ export default function Home() {
               </div>
             </div>
             <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-              {categories.map((category) => {
+              {categories.map((category, index) => {
                 const CategoryIcon = category.icon;
                 return (
                   <article
                     key={category.id}
+                    data-reveal="card"
+                    style={{ "--reveal-delay": `${index * 70}ms` } as CSSProperties}
                     className="border-t-2 border-navy pt-5"
                   >
                     <div className="flex items-start justify-between gap-4">
@@ -374,7 +420,7 @@ export default function Home() {
 
         <section id="about" className="bg-mist px-5 py-16 lg:px-16 lg:py-24">
           <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[.85fr_1.15fr]">
-            <div>
+            <div data-reveal="about-copy">
               <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">
                 Personal guidance, made simple
               </div>
@@ -429,7 +475,7 @@ export default function Home() {
           className="scroll-mt-20 px-5 py-16 lg:px-16 lg:py-24"
         >
           <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.8fr_1.2fr]">
-            <div>
+            <div data-reveal="enquiry-copy">
               <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.28em] text-gold">
                 Let&apos;s talk
               </div>
@@ -455,8 +501,8 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <div className="rounded-2xl bg-mist p-6 sm:p-8">
-              <div className="grid gap-4 sm:grid-cols-2">
+            <div data-reveal="enquiry-form" className="rounded-2xl bg-mist p-6 sm:p-8">
+            <div className="grid gap-4 sm:grid-cols-2">
                 <label className="text-xs font-medium uppercase tracking-[0.14em] text-muted-ink">
                   Your name
                   <input
