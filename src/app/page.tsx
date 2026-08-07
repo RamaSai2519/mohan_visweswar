@@ -307,7 +307,7 @@ export default function Home() {
                   A complete protection portfolio
                 </div>
                 <h2 className="font-playfair text-4xl font-semibold leading-tight text-ink sm:text-5xl">
-                  The right cover for every chapter.
+                  The Right cover for every chapter.
                 </h2>
                 <p className="text-base leading-relaxed text-muted-ink">
                   Browse by category and tap any service to start a personalised
@@ -517,7 +517,7 @@ export default function Home() {
                 Chandika Mohan Visweswar
               </div>
               <div className="mt-2 text-[11px] uppercase tracking-[0.22em] text-gold">
-                Insurance &amp; financial services
+                Insurance &amp; financial consultant
               </div>
               <p className="mt-5 max-w-md text-sm leading-relaxed text-slate-400">
                 Reliable service, trusted guidance and prompt assistance for the

@@ -15,9 +15,12 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "Chandika Mohan Visweswar — Insurance & Financial Services",
+  title: "Chandika Mohan Visweswar — Insurance & Financial Consultant ",
   description:
     "Insurance, loans and investment services for families and businesses — advised personally, end to end.",
+  icons: {
+    icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
