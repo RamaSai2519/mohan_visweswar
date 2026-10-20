@@ -34,6 +34,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
           strategy="afterInteractive"
         />
+        <Script id="portfolio-scroll-bridge" strategy="afterInteractive">
+          {`(function () {
+  if (window.top === window) return;
+  var PORTFOLIO = "https://rama.journeymen.in";
+  window.addEventListener("message", function (e) {
+    if (e.origin !== PORTFOLIO || !e.data || e.data.type !== "rss-scroll") return;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo(0, Math.max(0, Math.min(1, e.data.progress)) * max);
+  });
+  window.parent.postMessage({ type: "rss-ready" }, PORTFOLIO);
+})();`}
+        </Script>
         <Script id="ga4-init" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
